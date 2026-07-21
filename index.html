@@ -1046,10 +1046,11 @@ function utmParams(codigo) {
 }
 
 function montarLinkIndicacao(codigo) {
-  // Leva a colega à página de vendas. sck e src carregam o CÓDIGO puro —
+  // Leva a colega à página de vendas. Só sck e src, com o CÓDIGO puro:
   // é deles que o script da página tira a atribuição pro botão de compra.
+  // Sem UTMs de propósito — link curto compartilha melhor no WhatsApp.
   var sep = (C.SALES_PAGE || '').indexOf('?') >= 0 ? '&' : '?';
-  return C.SALES_PAGE + sep + 'sck=' + codigo + '&src=' + codigo + '&' + utmOnly(codigo);
+  return C.SALES_PAGE + sep + 'sck=' + codigo + '&src=' + codigo;
 }
 
 function montarCheckout(codigo) {
