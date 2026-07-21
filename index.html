@@ -33,6 +33,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KQW3T4J9');</script>
+<!-- End Google Tag Manager -->
+
 <!-- ══════════════════════════════════════════════════════════════════════
      CONFIG — É AQUI QUE VOCÊ EDITA PARA CADA CLIENTE.
      Nada abaixo do bloco "MOTOR" (no fim do arquivo) precisa ser tocado.
@@ -148,7 +156,8 @@ window.CONFIG = {
 
   FOOTER: [
     '© 2026 Coordenação de Verdade',
-    'Imersão: A Virada na Coordenação Pedagógica · Todos os direitos reservados'
+    'Imersão: A Virada na Coordenação Pedagógica · Todos os direitos reservados',
+    '<a href="https://www.midasdaeducacao.com.br/aviradacoordenacao" target="_blank" rel="noopener" style="color:var(--gold-dk); text-decoration:none;">Conhecer a Imersão: A Virada na Coordenação Pedagógica →</a>'
   ]
 };
 </script>
@@ -660,6 +669,10 @@ footer {
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KQW3T4J9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <!-- MODAL: JÁ CADASTRADO -->
 <div class="modal-overlay" id="modal-cadastrado">
@@ -690,6 +703,7 @@ footer {
   <nav>
     <div class="nav-logo" id="nav-logo"></div>
     <div class="nav-actions">
+      <a class="nav-login" href="https://www.midasdaeducacao.com.br/aviradacoordenacao" target="_blank" rel="noopener" style="text-decoration:none;">✨ <span class="cta-full">Conhecer a Imersão</span><span class="cta-short">Imersão</span></a>
       <button class="nav-login" onclick="acessarPainel()">👤 Entrar</button>
       <a href="#formulario" class="nav-cta"><span class="cta-full">Gerar meu link →</span><span class="cta-short">Gerar link</span></a>
     </div>
@@ -1001,17 +1015,30 @@ function gerarCodigo(nome) {
   return cap + rand; // ex.: "LucasMPWQK"
 }
 
-// UTMs que viajam junto com o código do indicador — a atribuição cruza
-// no GA/Meta/CRM, e o webhook continua usando o sck.
+// UTMs que viajam até o checkout, no mesmo formato dos anúncios do cliente:
+// utm_* individuais + src=fonte|campanha|conjunto|anúncio|posicionamento.
+// Se o visitante chegou com UTMs na URL (tráfego pago), elas seguem intactas
+// — a atribuição do anúncio se preserva. Sem UTMs, sai o padrão do programa
+// de indicação, com o código do indicador em utm_content e no src.
+// A pontuação NÃO depende disso: o webhook usa o sck.
 function utmParams(codigo) {
+  var incoming = new URLSearchParams(window.location.search);
+  var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src'];
+  if (keys.some(function (k) { return incoming.get(k); })) {
+    return keys.map(function (k) {
+      var v = incoming.get(k);
+      return v ? k + '=' + encodeURIComponent(v) : null;
+    }).filter(Boolean).join('&');
+  }
   var c = encodeURIComponent(codigo);
-  return 'utm_source=' + c + '&utm_medium=' + c + '&utm_campaign=' + c +
-         '&utm_content=' + c + '&utm_term=organico';
+  return 'utm_source=indicacao&utm_medium=indique-e-ganhe' +
+         '&utm_campaign=aviradacoordenacao&utm_content=' + c + '&utm_term=organico' +
+         '&src=' + encodeURIComponent('indicacao|aviradacoordenacao|indique-e-ganhe|' + codigo + '|organico');
 }
 
 function montarLinkIndicacao(codigo) {
   var sep = (C.SALES_PAGE || '').indexOf('?') >= 0 ? '&' : '?';
-  return C.SALES_PAGE + sep + 'sck=' + codigo + '&src=' + codigo + '&' + utmParams(codigo);
+  return C.SALES_PAGE + sep + 'sck=' + codigo + '&' + utmParams(codigo);
 }
 
 function montarCheckout(codigo) {
