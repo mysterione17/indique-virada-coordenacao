@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indique &amp; Ganhe</title>
+<link rel="icon" id="cfg-favicon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     CONFIG — É AQUI QUE VOCÊ EDITA PARA CADA CLIENTE.
+     Nada abaixo do bloco "MOTOR" (no fim do arquivo) precisa ser tocado.
+     Passo a passo completo: REPLICAR.md
+══════════════════════════════════════════════════════════════════════ -->
+<script>
+window.CONFIG = {
+
+  // ── 1. BACKEND (Supabase do cliente) ────────────────────────────────
+  // Enquanto estiver com os valores "SUA_..." a página roda em MODO DEMO
+  // (dados falsos, nada é gravado) — bom para demonstrar antes da venda.
+  SUPABASE_URL:      'https://vribvelmuhwdcoxcermd.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZyaWJ2ZWxtdWh3ZGNveGNlcm1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1OTQ0ODYsImV4cCI6MjEwMDE3MDQ4Nn0.-u4V9Cg1x-uCcGjBnlOQBvDy7jyFb68nfPLFsFTEKG4',
+
+  // Identificador desta campanha. Um mesmo Supabase aguenta várias
+  // campanhas — basta trocar este valor e publicar outra cópia da página.
+  CAMPAIGN_ID: 'virada-coordenacao-2026',
+
+  // ── 2. LINKS DE VENDA ───────────────────────────────────────────────
+  // Para onde o link de indicação leva a colega indicada.
+  SALES_PAGE: 'https://pay.hotmart.com/Y106465997B?off=2wk97hmz&checkoutMode=10',
+  // Checkout direto (Hotmart/Kiwify/Eduzz). O código do indicador é
+  // anexado como &sck=CODIGO — é assim que a venda é atribuída a ele.
+  CHECKOUT_BASE: 'https://pay.hotmart.com/Y106465997B?off=2wk97hmz&checkoutMode=10',
+
+  // Mensagem pronta do botão "Compartilhar no WhatsApp".
+  // {{link}} = link de indicação · {{nome}} = nome do indicador
+  WHATSAPP_MSG:
+    '*A VIRADA DA COORDENAÇÃO COMEÇOU.*\n\n' +
+    'Imersão: A Virada na Coordenação Pedagógica — para sair da sobrecarga ' +
+    'e ocupar o seu real papel, com segurança e respeito dos professores no 2º semestre.\n\n' +
+    'Garanta sua vaga por aqui:\n{{link}}',
+
+  // ── 3. MARCA ────────────────────────────────────────────────────────
+  BRAND: {
+    name:    'Coordenação ',  // parte em preto do logo
+    accent:  'de Verdade',    // parte em dourado do logo
+    favicon: 'assets/favicon.svg',
+    colors: {                 // paleta — todo o CSS deriva daqui
+      main:  '#D4AF37',
+      dark:  '#B8860B',
+      light: '#E5C45A'
+    }
+  },
+
+  // ── 4. TEXTOS DA PÁGINA ─────────────────────────────────────────────
+  TITLE:  'Indique & Ganhe — A Virada na Coordenação Pedagógica',
+  TOPBAR: '⚡ PROGRAMA DE INDICAÇÃO — A VIRADA NA COORDENAÇÃO PEDAGÓGICA',
+
+  HERO: {
+    eyebrow: 'Indique & Ganhe',
+    // Use <br> para quebrar linha. O trecho em <em> sai em dourado.
+    h1:  'A VIRADA DA COORDENAÇÃO<br><em>COMEÇOU.</em>',
+    sub: 'Saia da sobrecarga para o seu real papel, tendo segurança e respeito dos professores no 2º semestre.<br><br>Indique coordenadoras pedagógicas para a <strong>Imersão: A Virada na Coordenação Pedagógica</strong> e ganhe recompensas reais. Não é sorteio — as que indicarem mais, ganham.',
+    badges: [
+      { icon: '🎯', text: 'Não é sorteio. <strong>Quem mais indica, ganha.</strong>' },
+      { icon: '🎁', text: 'Qualquer indicação já <strong>garante um presente</strong>' },
+      { icon: '🔗', text: 'Link único e rastreável' }
+    ]
+  },
+
+  // Faixa que aparece só para quem chega por um link de indicação (?ref=).
+  INVITE: {
+    enabled: true,
+    eyebrow: '🎁 Você foi convidada',
+    title:   'Garanta sua vaga na <b>Imersão: A Virada na Coordenação Pedagógica</b>',
+    text:    'Indicação de {{quem}}. Saia da sobrecarga para o seu real papel no 2º semestre — as vagas encerram em breve.',
+    cta:     'Quero minha vaga na Imersão →'
+  },
+
+  RULES: {
+    label: 'Regras',
+    h2:    'Como funciona',
+    sub:   '3 passos simples para começar a indicar e acumular pontos.',
+    items: [
+      '<strong>Preencha seus dados abaixo</strong> para gerar seu link personalizado de indicação. Leva menos de 30 segundos.',
+      '<strong>Compartilhe seu link</strong> com coordenadoras pedagógicas que desejam sair da sobrecarga para o seu real papel, tendo segurança e respeito nesse segundo semestre.',
+      '<strong>A cada colega que se inscrever pelo seu link</strong>, você acumula 1 ponto. Os pontos determinam sua posição no ranking e os prêmios que você ganha.'
+    ]
+  },
+
+  PRIZES: {
+    label: 'Premiação',
+    h2:    'O que você ganha',
+    sub:   'A cada inscrição gerada pelo seu link, +1 ponto no ranking.',
+    // tier: 'all' | 'gold' | 'silver' | 'bronze' (muda a cor da borda)
+    cards: [
+      { tier:'all',    icon:'🎖️', tag:'PARA TODAS QUE INDICAREM', title:'Qualquer indicação conta',
+        text:'Indicou pelo menos 1 pessoa? Você já leva o <strong style="color:var(--green)">GUIA: Funções da Coordenação — 2º semestre</strong>.' },
+      { tier:'gold',   icon:'🏆', tag:'1º LUGAR',  title:'Formação Prática com a Carol',
+        text:'A maior recompensa da campanha: <strong>a Formação Prática com a Carol</strong>, para virar a chave da sua coordenação de vez.' },
+      { tier:'silver', icon:'🥈', tag:'2º LUGAR', title:'Gravação do evento A Virada',
+        text:'<strong>Acesso à gravação completa do evento A Virada</strong>, para assistir quando e quantas vezes quiser.' },
+      { tier:'bronze', icon:'🥉', tag:'3º LUGAR', title:'Pacote da Virada',
+        text:'<strong>PACOTE DA VIRADA:</strong> FUNÇÕES + FICHA + GUIA 2º SEMESTRE.' }
+    ],
+    note: '⚠️ <strong>Como os pontos são contados:</strong> a pontuação leva em conta as inscrições reais geradas pelo seu link — não apenas os compartilhamentos.'
+  },
+
+  // Bloco de prazo. Coloque null para remover a seção inteira.
+  URGENCY: {
+    title: 'IMPORTANTE: prazo para acumular pontos',
+    text:  'O ranking é encerrado no dia <strong>24 de julho às 18h</strong>. Gere seu link agora para começar a indicar o quanto antes.'
+  },
+
+  FORM: {
+    label: 'Formulário',
+    h2:    'Gere seu link de indicação',
+    sub:   'Preencha seus dados. Seu link exclusivo é gerado na hora.'
+  },
+
+  FOOTER: [
+    '© 2026 Coordenação de Verdade',
+    'Imersão: A Virada na Coordenação Pedagógica · Todos os direitos reservados'
+  ]
+};
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:     #D4AF37;
+  --gold-dk:  #B8860B;
+  --gold-lt:  #E5C45A;
+  --bg:       #FFFFFF;
+  --bg2:      #FAFAFA;
+  --bg3:      #F7F7F7;
+  --border:   #EAEAEA;
+  --text:     #1A1A1A;
+  --muted:    #666666;
+  --green:    #1F9D62;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: #1A1A1A;
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-family: 'Sora', sans-serif; font-weight: 900; font-size: 18px; letter-spacing: -0.02em; }
+.nav-logo span { color: var(--gold-dk); }
+.nav-cta {
+  background: var(--gold); color: #000;
+  padding: 8px 18px; border-radius: 6px;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--gold-lt); }
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+.nav-login {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text); padding: 8px 16px; border-radius: 6px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: 'Inter', sans-serif; transition: border-color 0.2s, color 0.2s;
+}
+.nav-login:hover { border-color: var(--gold-dk); color: var(--gold-dk); }
+.cta-short { display: none; }
+
+/* ── LANDING PAGE ── */
+#page-landing { display: block; }
+#page-painel  { display: none; }
+
+/* ── HERO ── */
+.hero {
+  padding: 80px 24px 60px;
+  max-width: 720px; margin: 0 auto; text-align: center;
+}
+.eyebrow {
+  display: inline-block;
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.3);
+  color: var(--gold-dk);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; padding: 5px 14px; border-radius: 20px;
+  margin-bottom: 28px;
+}
+.hero h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(32px, 6vw, 54px);
+  font-weight: 900; line-height: 1.08; letter-spacing: -0.03em;
+  margin-bottom: 10px;
+}
+.hero h1 em { font-style: normal; color: var(--gold-dk); }
+.hero-sub {
+  font-size: clamp(15px, 2.5vw, 17px); color: var(--muted);
+  margin-top: 20px; max-width: 560px; margin-left: auto; margin-right: auto;
+}
+.hero-sub strong { color: var(--text); }
+
+.badges {
+  display: flex; gap: 12px; justify-content: center;
+  flex-wrap: wrap; margin-top: 32px;
+}
+.badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 16px;
+  font-size: 13px; font-weight: 500;
+}
+.badge strong { color: var(--green); }
+
+/* ── SECTIONS ── */
+.section {
+  max-width: 720px; margin: 0 auto; padding: 60px 24px;
+}
+.section + .section { border-top: 1px solid var(--border); }
+.section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold-dk);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::before, .section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.section h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 700; letter-spacing: -0.02em; margin-bottom: 10px;
+}
+.section > p { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+
+/* ── REGRAS ── */
+.rules-list { display: flex; flex-direction: column; gap: 12px; }
+.rule-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+}
+.rule-num {
+  width: 32px; height: 32px; min-width: 32px;
+  border-radius: 50%;
+  background: rgba(212,175,55,0.12); border: 1px solid rgba(212,175,55,0.3);
+  color: var(--gold-dk); font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.rule-text { font-size: 15px; line-height: 1.5; padding-top: 5px; }
+.rule-text strong { color: var(--text); }
+
+/* ── PREMIAÇÃO ── */
+.prizes { display: flex; flex-direction: column; gap: 12px; }
+.prize-card {
+  position: relative; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px 22px; display: flex; align-items: flex-start; gap: 16px;
+}
+.prize-card.tier-all    { border-color: rgba(62,207,142,0.3); }
+.prize-card.tier-gold   { border-color: rgba(212,175,55,0.35); }
+.prize-card.tier-silver { border-color: rgba(180,180,200,0.3); }
+.prize-card.tier-bronze { border-color: rgba(150,120,80,0.3); }
+.prize-icon { font-size: 26px; line-height: 1; margin-top: 2px; }
+.prize-tag {
+  position: absolute; top: 14px; right: 16px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  padding: 3px 8px; border-radius: 4px;
+}
+.tier-all    .prize-tag { background:rgba(62,207,142,0.15);  color:var(--green); }
+.tier-gold   .prize-tag { background:rgba(212,175,55,0.18);  color:var(--gold); }
+.tier-silver .prize-tag { background:rgba(120,120,140,0.12); color:#6b6b80; }
+.tier-bronze .prize-tag { background:rgba(176,120,60,0.14);  color:#9a5a16; }
+.prize-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+.prize-body p  { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.5; }
+.prize-body strong { color: var(--gold-dk); }
+
+.prize-note {
+  margin-top: 20px;
+  background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.18);
+  border-radius: 10px; padding: 14px 18px;
+  font-size: 13px; color: var(--muted); line-height: 1.5;
+}
+.prize-note strong { color: var(--gold-dk); }
+
+/* ── URGÊNCIA ── */
+.urgency-box {
+  background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.22);
+  border-radius: 12px; padding: 22px 24px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.urgency-box h3 { font-weight: 700; font-size: 15px; color: var(--gold-dk); margin-bottom: 6px; }
+.urgency-box p  { font-size: 14px; color: var(--muted); margin: 0; }
+.urgency-box strong { color: var(--text); }
+
+/* ── FORMULÁRIO ── */
+.form-wrap {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px 28px;
+}
+.form-wrap h2 {
+  font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700;
+  margin-bottom: 6px; letter-spacing: -0.02em;
+}
+.form-wrap > p { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+.form-group { margin-bottom: 18px; }
+.form-group label {
+  display: block; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 7px;
+}
+.form-group label span { color: var(--gold-dk); }
+.form-group input {
+  width: 100%; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px 14px; color: var(--text);
+  font-family: 'Inter', sans-serif; font-size: 15px;
+  outline: none; transition: border-color 0.2s;
+}
+.form-group input::placeholder { color: var(--muted); opacity: 0.5; }
+.form-group input:focus { border-color: var(--gold-dk); }
+
+.btn-primary {
+  width: 100%; background: var(--gold); color: #000;
+  border: none; border-radius: 8px; padding: 15px;
+  font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: background 0.2s, transform 0.1s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-primary:hover { background: var(--gold-lt); }
+.btn-primary:active { transform: scale(0.99); }
+.btn-primary.loading { opacity: 0.7; pointer-events: none; }
+
+.form-footer {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; margin-top: 16px; font-size: 12px; color: var(--muted);
+}
+.form-footer a { color: var(--gold-dk); text-decoration: none; }
+.form-footer a:hover { text-decoration: underline; }
+
+/* ── MODAL JÁ CADASTRADO ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--bg2); border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 20px; padding: 36px 32px;
+  max-width: 420px; width: 100%; text-align: center;
+  animation: fadeUp 0.25s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.modal-emoji {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--bg3); font-size: 30px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+.modal-box h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.modal-box p  { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+.modal-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  text-align: left; margin-bottom: 8px;
+}
+.modal-link-box {
+  display: flex; gap: 8px; align-items: center;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;
+}
+.modal-link-text {
+  flex: 1; font-size: 13px; color: var(--gold-dk);
+  word-break: break-all; text-align: left;
+}
+.btn-icon {
+  background: rgba(212,175,55,0.15); border: 1px solid rgba(212,175,55,0.3);
+  color: var(--gold-dk); border-radius: 6px; padding: 7px 10px;
+  cursor: pointer; font-size: 15px; transition: background 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-icon:hover { background: rgba(212,175,55,0.28); }
+.modal-codigo { font-size: 12px; color: var(--muted); text-align: left; margin-bottom: 20px; }
+.modal-codigo span { color: var(--gold-dk); font-weight: 700; }
+.btn-copiar-grande {
+  width: 100%; background: var(--gold); color: #000;
+  border: none; border-radius: 8px; padding: 14px;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  gap: 8px; margin-bottom: 10px; transition: background 0.2s;
+}
+.btn-copiar-grande:hover { background: var(--gold-lt); }
+.btn-ver-painel {
+  width: 100%; background: transparent;
+  border: 1px solid var(--border); border-radius: 8px; padding: 13px;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+  color: var(--text); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: border-color 0.2s;
+}
+.btn-ver-painel:hover { border-color: var(--gold-dk); color: var(--gold-dk); }
+
+/* ── PAINEL ── */
+#page-painel {
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+.painel-header {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.painel-header-left h2 { font-size: 16px; font-weight: 700; }
+.painel-header-left p  { font-size: 13px; color: var(--muted); }
+.painel-header-actions { display: flex; gap: 10px; }
+.btn-ghost {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--muted); border-radius: 6px;
+  padding: 7px 12px; font-size: 13px; cursor: pointer;
+  font-family: 'Inter', sans-serif; transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--gold-dk); color: var(--gold-dk); }
+
+.painel-body { max-width: 720px; margin: 0 auto; padding: 28px 24px; }
+
+.kpi-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 24px;
+}
+.kpi-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+}
+.kpi-card .kpi-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+  display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+}
+.kpi-card .kpi-value {
+  font-family: 'Sora', sans-serif; font-size: 34px;
+  font-weight: 900; line-height: 1; letter-spacing: -0.02em;
+}
+.kpi-card.kpi-pos .kpi-value { color: var(--gold-dk); }
+.kpi-card.kpi-conv .kpi-value { color: var(--green); }
+
+.links-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 22px; margin-bottom: 16px;
+}
+.links-card h3 {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+}
+.link-row { margin-bottom: 14px; }
+.link-row-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+}
+.link-row-field {
+  display: flex; gap: 8px; align-items: center;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 12px;
+}
+.link-row-field span {
+  flex: 1; font-size: 13px; color: var(--text);
+  word-break: break-all; white-space: normal; line-height: 1.4;
+}
+.link-row-field span.gold-link { color: var(--gold-dk); }
+
+.link-actions { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+.btn-copy-full {
+  flex: 1; min-width: 120px;
+  background: var(--gold); color: #000; border: none;
+  border-radius: 7px; padding: 11px 14px;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: background 0.2s;
+}
+.btn-copy-full:hover { background: var(--gold-lt); }
+.btn-share-full {
+  flex: 1; min-width: 120px;
+  background: transparent; border: 1px solid rgba(37,211,102,0.3);
+  color: #25d366; border-radius: 7px; padding: 11px 14px;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: border-color 0.2s;
+  text-decoration: none;
+}
+.btn-share-full:hover { border-color: #25d366; background: rgba(37,211,102,0.06); }
+
+.codigo-badge {
+  font-size: 12px; color: var(--muted); margin-top: 10px;
+}
+.codigo-badge span { color: var(--gold-dk); font-weight: 700; }
+
+/* ── TABS ── */
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.tab-btn {
+  flex: 1; background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 11px; font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.tab-btn.active {
+  background: rgba(212,175,55,0.12);
+  border-color: rgba(212,175,55,0.35); color: var(--gold-dk);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── CONVERSÕES ── */
+.empty-state {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 48px 24px; text-align: center;
+}
+.empty-state .empty-icon { font-size: 32px; margin-bottom: 12px; }
+.empty-state h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.empty-state p  { font-size: 13px; color: var(--muted); }
+
+.conversion-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px; margin-bottom: 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.conv-info h4 { font-size: 14px; font-weight: 600; }
+.conv-info p  { font-size: 12px; color: var(--muted); }
+.conv-badge {
+  background: rgba(62,207,142,0.12); color: var(--green);
+  border: 1px solid rgba(62,207,142,0.25);
+  border-radius: 5px; padding: 3px 9px; font-size: 12px; font-weight: 700;
+}
+
+/* ── RANKING ── */
+.ranking-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 14px;
+}
+.ranking-item.mine { border-color: rgba(212,175,55,0.35); background: rgba(212,175,55,0.05); }
+.rank-pos {
+  width: 30px; min-width: 30px; text-align: center;
+  font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 900;
+  color: var(--muted);
+}
+.rank-pos.top1 { color: #FFD700; }
+.rank-pos.top2 { color: #C0C0C0; }
+.rank-pos.top3 { color: #CD7F32; }
+.rank-name { flex: 1; font-size: 14px; font-weight: 600; }
+.rank-name small { display: block; font-size: 11px; color: var(--muted); font-weight: 400; }
+.rank-pts {
+  font-family: 'Sora', sans-serif; font-size: 20px;
+  font-weight: 900; color: var(--gold-dk);
+}
+.rank-pts small { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--muted); display: block; text-align: right; font-weight: 400; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 24px; text-align: center;
+  font-size: 12px; color: var(--muted);
+}
+
+/* ── SPINNER ── */
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: #000; border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 500px) {
+  nav { padding: 12px 16px; }
+  .nav-logo { font-size: 16px; }
+  .nav-actions { gap: 7px; }
+  .nav-login { padding: 7px 11px; font-size: 12px; }
+  .nav-cta { padding: 7px 12px; font-size: 12px; }
+  .cta-full { display: none; }
+  .cta-short { display: inline; }
+  .hero { padding: 50px 20px 40px; }
+  .hero h1 { font-size: clamp(25px, 7vw, 34px); }
+  .section { padding: 44px 20px; }
+  /* tags da premiação viram rótulo acima do título (evita sobrepor) */
+  .prize-tag { position: static; display: inline-block; margin-bottom: 9px; }
+  .prize-card { padding-top: 18px; }
+  .form-wrap { padding: 24px 18px; }
+  .badges { flex-direction: column; align-items: center; }
+  .badge { width: 100%; justify-content: center; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .painel-body { padding: 20px 16px; }
+  .modal-box { padding: 28px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Sombras suaves (premium, padrão do site) */
+.badge, .rule-item, .prize-card, .form-wrap, .urgency-box, .modal-box,
+.kpi-card, .links-card, .conversion-item, .ranking-item, .empty-state {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+}
+.nav-cta, .btn-primary, .btn-copiar-grande, .btn-copy-full { box-shadow: 0 1px 2px rgba(184,134,11,0.18); }
+</style>
+</head>
+<body>
+
+<!-- MODAL: JÁ CADASTRADO -->
+<div class="modal-overlay" id="modal-cadastrado">
+  <div class="modal-box">
+    <div class="modal-emoji">👋</div>
+    <h3>Seu link está pronto!</h3>
+    <p>Guarde este link — é por ele que suas indicações são contadas.</p>
+    <div class="modal-label">SEU LINK DE INDICAÇÃO</div>
+    <div class="modal-link-box">
+      <span class="modal-link-text" id="modal-link-text">—</span>
+      <button class="btn-icon" onclick="copiarModalLink()" title="Copiar">📋</button>
+    </div>
+    <div class="modal-codigo">Código: <span id="modal-codigo-text">—</span></div>
+    <button class="btn-copiar-grande" onclick="copiarModalLink()" id="btn-copiar-modal">
+      📋 COPIAR MEU LINK
+    </button>
+    <button class="btn-ver-painel" onclick="abrirPainel()">
+      ↗ Ver meu painel de pontos
+    </button>
+  </div>
+</div>
+
+<!-- PÁGINA: LANDING -->
+<div id="page-landing">
+
+  <div class="topbar" data-cfg="TOPBAR"></div>
+
+  <nav>
+    <div class="nav-logo" id="nav-logo"></div>
+    <div class="nav-actions">
+      <button class="nav-login" onclick="acessarPainel()">👤 Entrar</button>
+      <a href="#formulario" class="nav-cta"><span class="cta-full">Gerar meu link →</span><span class="cta-short">Gerar link</span></a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow" data-cfg="HERO.eyebrow"></div>
+    <h1 data-cfg="HERO.h1"></h1>
+    <p class="hero-sub" data-cfg="HERO.sub"></p>
+    <div class="badges" id="hero-badges"></div>
+  </header>
+
+  <!-- BANNER DE CONVITE (só para quem chega por um link ?ref=) -->
+  <div id="convite-banner" style="display:none; max-width:720px; margin:0 auto 12px; padding:0 24px;">
+    <div style="background:rgba(31,157,98,0.07); border:1px solid rgba(31,157,98,0.3); border-radius:14px; padding:22px 24px;">
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--green); margin-bottom:10px;" data-cfg="INVITE.eyebrow"></div>
+      <h3 style="font-family:'Sora',sans-serif; font-size:20px; font-weight:700; letter-spacing:-0.02em; margin-bottom:8px;" id="convite-titulo"></h3>
+      <p style="font-size:14px; color:var(--muted); margin-bottom:16px;" id="convite-texto"></p>
+      <a id="convite-cta" href="#" target="_blank" rel="noopener" class="nav-cta" style="display:inline-block; padding:13px 24px; font-size:14px;"></a>
+    </div>
+  </div>
+
+  <!-- REGRAS -->
+  <section class="section">
+    <div class="section-label" data-cfg="RULES.label"></div>
+    <h2 data-cfg="RULES.h2"></h2>
+    <p data-cfg="RULES.sub"></p>
+    <div class="rules-list" id="rules-list"></div>
+  </section>
+
+  <!-- PREMIAÇÃO -->
+  <section class="section">
+    <div class="section-label" data-cfg="PRIZES.label"></div>
+    <h2 data-cfg="PRIZES.h2"></h2>
+    <p data-cfg="PRIZES.sub"></p>
+    <div class="prizes" id="prizes-list"></div>
+    <div class="prize-note" data-cfg="PRIZES.note"></div>
+  </section>
+
+  <!-- URGÊNCIA -->
+  <section class="section" id="section-urgencia">
+    <div class="urgency-box">
+      <div style="font-size:22px;">⏳</div>
+      <div>
+        <h3 data-cfg="URGENCY.title"></h3>
+        <p data-cfg="URGENCY.text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULÁRIO -->
+  <section class="section" id="formulario">
+    <div class="section-label" data-cfg="FORM.label"></div>
+    <div class="form-wrap">
+      <h2 data-cfg="FORM.h2"></h2>
+      <p data-cfg="FORM.sub"></p>
+      <div class="form-group">
+        <label for="nome">Nome completo <span>*</span></label>
+        <input type="text" id="nome" placeholder="Seu nome completo" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail <span>*</span></label>
+        <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="whatsapp">WhatsApp <span>*</span></label>
+        <input type="tel" id="whatsapp" placeholder="(00) 00000-0000" autocomplete="tel">
+      </div>
+      <button class="btn-primary" id="btn-gerar" onclick="gerarLink()">
+        <span id="btn-text">→ Gerar meu link e começar</span>
+      </button>
+      <div class="form-footer">
+        🔒 Seus dados são protegidos e nunca serão compartilhados.
+        &nbsp;·&nbsp; Já tem conta? <a href="#" onclick="acessarPainelPorEmail(event)">Acessar painel</a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="rodape"></footer>
+
+</div><!-- /page-landing -->
+
+
+<!-- PÁGINA: PAINEL DO INDICADOR -->
+<div id="page-painel">
+
+  <div class="topbar" data-cfg="TOPBAR"></div>
+
+  <div class="painel-header">
+    <div class="painel-header-left">
+      <h2>Olá, <span id="painel-nome-curto">—</span>! 👋</h2>
+      <p id="painel-email-display">—</p>
+    </div>
+    <div class="painel-header-actions">
+      <button class="btn-ghost" onclick="voltarLanding()" title="Voltar">← Voltar</button>
+      <button class="btn-ghost" onclick="sair()" title="Sair">Sair</button>
+    </div>
+  </div>
+
+  <div class="painel-body">
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">⭐ Pontos</div>
+        <div class="kpi-value" id="kpi-pontos">0</div>
+      </div>
+      <div class="kpi-card kpi-pos">
+        <div class="kpi-label">🏅 Posição</div>
+        <div class="kpi-value" id="kpi-posicao">#—</div>
+      </div>
+      <div class="kpi-card kpi-conv">
+        <div class="kpi-label">📈 Conversões</div>
+        <div class="kpi-value" id="kpi-conversoes">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">👥 Participantes</div>
+        <div class="kpi-value" id="kpi-participantes">—</div>
+      </div>
+    </div>
+
+    <!-- LINKS -->
+    <div class="links-card">
+      <h3>Seus links de indicação</h3>
+
+      <div class="link-row">
+        <div class="link-row-label">Link de Indicação (Página de Vendas)</div>
+        <div class="link-row-field">
+          <span class="gold-link" id="painel-link-indicacao">—</span>
+          <button class="btn-icon" onclick="copiarTexto('painel-link-indicacao', this)" title="Copiar">📋</button>
+        </div>
+      </div>
+
+      <div class="link-row">
+        <div class="link-row-label">Checkout Direto</div>
+        <div class="link-row-field">
+          <span id="painel-link-checkout">—</span>
+          <button class="btn-icon" onclick="copiarTexto('painel-link-checkout', this)" title="Copiar">📋</button>
+        </div>
+      </div>
+
+      <div class="link-actions">
+        <button class="btn-copy-full" onclick="copiarTexto('painel-link-indicacao', this)">
+          📋 Copiar Link
+        </button>
+        <a id="btn-wpp-painel" href="#" class="btn-share-full" target="_blank">
+          💬 Compartilhar no WhatsApp
+        </a>
+      </div>
+
+      <div class="codigo-badge">Código: <span id="painel-codigo">—</span></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('conversoes', this)">📈 Minhas conversões</button>
+      <button class="tab-btn" onclick="switchTab('ranking', this)">🏆 Ranking</button>
+    </div>
+
+    <div id="tab-conversoes" class="tab-content active">
+      <div id="conversoes-lista">
+        <div class="empty-state">
+          <div class="empty-icon">ℹ️</div>
+          <h3>Nenhuma conversão ainda.</h3>
+          <p>Compartilhe seu link para começar a ganhar pontos!</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-ranking" class="tab-content">
+      <div id="ranking-lista">
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <h3>Carregando ranking...</h3>
+          <p>Aguarde um instante.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /painel-body -->
+</div><!-- /page-painel -->
+
+<script>
+// ══════════════════════════════════════════════════════════════════════
+// MOTOR — não precisa editar nada daqui para baixo.
+// Todo o conteúdo/cores/links sai do window.CONFIG lá no topo do arquivo.
+// ══════════════════════════════════════════════════════════════════════
+(function () {
+'use strict';
+
+var C = window.CONFIG || {};
+
+var SUPABASE_URL = C.SUPABASE_URL || '';
+var SUPABASE_KEY = C.SUPABASE_ANON_KEY || '';
+var CAMPAIGN_ID  = C.CAMPAIGN_ID || 'campanha';
+
+var API = SUPABASE_URL.replace(/\/$/, '') + '/rest/v1';
+var HEADERS = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY,
+  'Content-Type': 'application/json'
+};
+
+// Modo demo: enquanto as chaves não forem preenchidas, a página funciona
+// com dados falsos e não grava nada. Serve para demonstrar antes da venda.
+var DEMO_MODE = !SUPABASE_URL || !SUPABASE_KEY ||
+                SUPABASE_URL.indexOf('SUA_') === 0 || SUPABASE_KEY.indexOf('SUA_') === 0;
+
+var indicadorAtual = null;
+
+// ══════════════════════════════════════
+// RENDER DO CONFIG
+// ══════════════════════════════════════
+function pick(path) {
+  return path.split('.').reduce(function (o, k) { return (o == null ? o : o[k]); }, C);
+}
+
+function aplicarConfig() {
+  // Cores da marca
+  var col = (C.BRAND && C.BRAND.colors) || {};
+  var root = document.documentElement.style;
+  if (col.main)  root.setProperty('--gold', col.main);
+  if (col.dark)  root.setProperty('--gold-dk', col.dark);
+  if (col.light) root.setProperty('--gold-lt', col.light);
+
+  if (C.TITLE) document.title = C.TITLE;
+  if (C.BRAND && C.BRAND.favicon) {
+    var fav = document.getElementById('cfg-favicon');
+    if (fav) fav.href = C.BRAND.favicon;
+  }
+
+  // Logo do topo (parte 2 em dourado)
+  var logo = document.getElementById('nav-logo');
+  if (logo) {
+    logo.innerHTML = esc((C.BRAND && C.BRAND.name) || '') +
+                     '<span>' + esc((C.BRAND && C.BRAND.accent) || '') + '</span>';
+  }
+
+  // Textos simples marcados com data-cfg
+  Array.prototype.forEach.call(document.querySelectorAll('[data-cfg]'), function (el) {
+    var v = pick(el.getAttribute('data-cfg'));
+    if (v != null) el.innerHTML = v;
+  });
+
+  // Badges do hero
+  var badges = (C.HERO && C.HERO.badges) || [];
+  document.getElementById('hero-badges').innerHTML = badges.map(function (b) {
+    return '<div class="badge">' + (b.icon || '') + ' <span>' + b.text + '</span></div>';
+  }).join('');
+
+  // Passos das regras
+  var items = (C.RULES && C.RULES.items) || [];
+  document.getElementById('rules-list').innerHTML = items.map(function (t, i) {
+    return '<div class="rule-item"><div class="rule-num">' + (i + 1) + '</div>' +
+           '<div class="rule-text">' + t + '</div></div>';
+  }).join('');
+
+  // Cards de premiação
+  var cards = (C.PRIZES && C.PRIZES.cards) || [];
+  document.getElementById('prizes-list').innerHTML = cards.map(function (p) {
+    return '<div class="prize-card tier-' + (p.tier || 'all') + '">' +
+             '<div class="prize-icon">' + (p.icon || '🎁') + '</div>' +
+             '<div class="prize-body">' +
+               '<div class="prize-tag">' + (p.tag || '') + '</div>' +
+               '<h3>' + (p.title || '') + '</h3>' +
+               '<p>' + (p.text || '') + '</p>' +
+             '</div>' +
+           '</div>';
+  }).join('');
+
+  // Seção de urgência é opcional (URGENCY: null remove)
+  if (!C.URGENCY) {
+    var u = document.getElementById('section-urgencia');
+    if (u) u.remove();
+  }
+
+  // Rodapé
+  var linhas = C.FOOTER || [];
+  document.getElementById('rodape').innerHTML = linhas.map(function (l, i) {
+    return '<p' + (i ? ' style="margin-top:6px;"' : '') + '>' + l + '</p>';
+  }).join('');
+}
+
+// ══════════════════════════════════════
+// UTILITÁRIOS
+// ══════════════════════════════════════
+function esc(s) {
+  return (s == null ? '' : String(s)).replace(/[&<>"]/g, function (m) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m];
+  });
+}
+
+function primeiroNome(nome) {
+  return nome ? nome.trim().split(' ')[0] : nome;
+}
+
+function gerarCodigo(nome) {
+  // Primeiro nome sem acento, capitalizado + sufixo aleatório legível.
+  var primeiro = (nome || '').trim().split(' ')[0]
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-zA-Z]/g, '');
+  var cap = primeiro
+    ? primeiro.charAt(0).toUpperCase() + primeiro.slice(1).toLowerCase()
+    : 'User';
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sem 0/O/1/I
+  var rand = '';
+  for (var i = 0; i < 5; i++) rand += chars.charAt(Math.floor(Math.random() * chars.length));
+  return cap + rand; // ex.: "LucasMPWQK"
+}
+
+// UTMs que viajam junto com o código do indicador — a atribuição cruza
+// no GA/Meta/CRM, e o webhook continua usando o sck.
+function utmParams(codigo) {
+  var c = encodeURIComponent(codigo);
+  return 'utm_source=' + c + '&utm_medium=' + c + '&utm_campaign=' + c +
+         '&utm_content=' + c + '&utm_term=organico';
+}
+
+function montarLinkIndicacao(codigo) {
+  var sep = (C.SALES_PAGE || '').indexOf('?') >= 0 ? '&' : '?';
+  return C.SALES_PAGE + sep + 'sck=' + codigo + '&src=' + codigo + '&' + utmParams(codigo);
+}
+
+function montarCheckout(codigo) {
+  var sep = (C.CHECKOUT_BASE || '').indexOf('?') >= 0 ? '&' : '?';
+  return C.CHECKOUT_BASE + sep + 'sck=' + codigo + '&' + utmParams(codigo);
+}
+
+function montarMsgWhatsApp(link, nome) {
+  var msg = (C.WHATSAPP_MSG || '{{link}}')
+    .replace(/\{\{link\}\}/g, link)
+    .replace(/\{\{nome\}\}/g, nome || '');
+  return encodeURIComponent(msg);
+}
+
+function formatarTel(input) {
+  if (!input) return;
+  input.addEventListener('input', function () {
+    var v = this.value.replace(/\D/g, '');
+    if (v.length <= 10) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    else                v = v.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+    this.value = v;
+  });
+}
+
+function copiarTexto(idOuTexto, btnEl) {
+  var texto = (idOuTexto.indexOf('http') === 0 || idOuTexto.indexOf('?') >= 0)
+    ? idOuTexto
+    : document.getElementById(idOuTexto).textContent;
+  navigator.clipboard.writeText(texto).then(function () {
+    if (btnEl && btnEl.tagName === 'BUTTON') {
+      var orig = btnEl.textContent;
+      btnEl.textContent = orig.indexOf('Copiar') >= 0 ? '✓ Copiado!' : '✓';
+      setTimeout(function () { btnEl.textContent = orig; }, 2000);
+    }
+  });
+}
+
+// ══════════════════════════════════════
+// API SUPABASE
+// ══════════════════════════════════════
+var DEMO_RANKING = [
+  { nome: 'Carlos Silva',  codigo: 'CarlosXK4QP', pontos: 12 },
+  { nome: 'Ana Ferreira',  codigo: 'AnaTR7WZ',    pontos: 9  },
+  { nome: 'João Souza',    codigo: 'JoaoQM2XV',   pontos: 7  },
+  { nome: 'Maria Costa',   codigo: 'MariaZP8KH',  pontos: 5  },
+  { nome: 'Pedro Lima',    codigo: 'PedroWJ5NT',  pontos: 3  }
+];
+
+// Todo acesso ao banco passa pelas funções ig_* do schema.sql — as tabelas
+// em si ficam fechadas, então a chave pública desta página não dá para
+// listar e-mail/WhatsApp de ninguém.
+async function rpc(fn, params) {
+  var r = await fetch(API + '/rpc/' + fn, {
+    method: 'POST',
+    headers: HEADERS,
+    body: JSON.stringify(params || {})
+  });
+  var d = await r.json().catch(function () { return null; });
+  if (!r.ok) throw new Error((d && (d.message || d.hint)) || ('Erro ' + r.status));
+  return d;
+}
+
+async function buscarPorEmail(email) {
+  if (DEMO_MODE) return null;
+  var d = await rpc('ig_buscar', { p_campaign: CAMPAIGN_ID, p_email: email });
+  return (d && d.length) ? d[0] : null;
+}
+
+async function criarIndicador(nome, email, whatsapp, codigo) {
+  if (DEMO_MODE) return { id: 'demo', nome: nome, email: email, whatsapp: whatsapp, codigo: codigo, pontos: 0 };
+  var d = await rpc('ig_registrar', {
+    p_campaign: CAMPAIGN_ID, p_nome: nome, p_email: email,
+    p_whatsapp: whatsapp, p_codigo: codigo
+  });
+  if (!d || !d.length) throw new Error('Não foi possível concluir o cadastro.');
+  return d[0];
+}
+
+async function buscarConversoes(referrerId) {
+  if (DEMO_MODE || !referrerId || referrerId === 'demo') return [];
+  return await rpc('ig_conversoes', { p_referrer_id: referrerId });
+}
+
+async function buscarRanking() {
+  if (DEMO_MODE) {
+    var demo = DEMO_RANKING.slice();
+    // No modo demo o próprio visitante aparece no fim do ranking.
+    if (indicadorAtual) demo.push({ nome: indicadorAtual.nome, codigo: indicadorAtual.codigo, pontos: 0 });
+    return demo;
+  }
+  return await rpc('ig_ranking', { p_campaign: CAMPAIGN_ID });
+}
+
+async function buscarTotalParticipantes() {
+  if (DEMO_MODE) return 200;
+  return await rpc('ig_total', { p_campaign: CAMPAIGN_ID });
+}
+
+async function nomePorCodigo(codigo) {
+  return await rpc('ig_nome_por_codigo', { p_campaign: CAMPAIGN_ID, p_codigo: codigo });
+}
+
+function registrarClique(codigo) {
+  rpc('ig_click', { p_campaign: CAMPAIGN_ID, p_codigo: codigo, p_ua: navigator.userAgent })
+    .catch(function () {});
+}
+
+// ══════════════════════════════════════
+// GERAR LINK (formulário)
+// ══════════════════════════════════════
+async function gerarLink() {
+  var nome     = document.getElementById('nome').value.trim();
+  var email    = document.getElementById('email').value.trim();
+  var whatsapp = document.getElementById('whatsapp').value.trim();
+
+  if (!nome || !email || !whatsapp) { alert('Preencha todos os campos.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Digite um e-mail válido.'); return; }
+
+  var btn = document.getElementById('btn-gerar');
+  btn.classList.add('loading');
+  document.getElementById('btn-text').innerHTML = '<div class="spinner"></div> Aguarde...';
+
+  try {
+    var indicador = await buscarPorEmail(email);   // já cadastrado? reaproveita
+    if (!indicador) indicador = await criarIndicador(nome, email, whatsapp, gerarCodigo(nome));
+
+    indicadorAtual = indicador;
+    salvarLocal(indicador);
+    mostrarModalCadastrado(indicador);
+
+  } catch (e) {
+    if (DEMO_MODE) {
+      indicadorAtual = { id: 'demo', nome: nome, email: email, whatsapp: whatsapp, codigo: gerarCodigo(nome), pontos: 0 };
+      salvarLocal(indicadorAtual);
+      mostrarModalCadastrado(indicadorAtual);
+    } else {
+      alert('Erro: ' + e.message);
+    }
+  } finally {
+    btn.classList.remove('loading');
+    document.getElementById('btn-text').textContent = '→ Gerar meu link e começar';
+  }
+}
+
+function mostrarModalCadastrado(indicador) {
+  document.getElementById('modal-link-text').textContent  = montarLinkIndicacao(indicador.codigo);
+  document.getElementById('modal-codigo-text').textContent = indicador.codigo;
+  document.getElementById('modal-cadastrado').classList.add('open');
+}
+
+function copiarModalLink() {
+  var link = document.getElementById('modal-link-text').textContent;
+  navigator.clipboard.writeText(link).then(function () {
+    var btn = document.getElementById('btn-copiar-modal');
+    btn.textContent = '✓ COPIADO!';
+    setTimeout(function () { btn.innerHTML = '📋 COPIAR MEU LINK'; }, 2000);
+  });
+}
+
+// ══════════════════════════════════════
+// PAINEL DO INDICADOR
+// ══════════════════════════════════════
+async function abrirPainel() {
+  document.getElementById('modal-cadastrado').classList.remove('open');
+  if (!indicadorAtual) {
+    indicadorAtual = carregarLocal();
+    if (!indicadorAtual) { alert('Sessão expirada. Preencha o formulário novamente.'); return; }
+  }
+  preencherPainel(indicadorAtual);
+  document.getElementById('page-landing').style.display = 'none';
+  document.getElementById('page-painel').style.display  = 'block';
+  window.scrollTo(0, 0);
+  carregarDadosPainel(indicadorAtual);
+}
+
+function preencherPainel(ind) {
+  var link = montarLinkIndicacao(ind.codigo);
+  document.getElementById('painel-nome-curto').textContent     = primeiroNome(ind.nome);
+  document.getElementById('painel-email-display').textContent  = ind.email;
+  document.getElementById('painel-link-indicacao').textContent = link;
+  document.getElementById('painel-link-checkout').textContent  = montarCheckout(ind.codigo);
+  // Quando a página de vendas JÁ é o checkout, as duas linhas mostram
+  // praticamente o mesmo link — mostrar as duas só confunde.
+  document.getElementById('painel-link-checkout').closest('.link-row').style.display =
+    (C.SALES_PAGE === C.CHECKOUT_BASE) ? 'none' : '';
+  document.getElementById('painel-codigo').textContent         = ind.codigo;
+  document.getElementById('kpi-pontos').textContent            = ind.pontos || 0;
+  document.getElementById('btn-wpp-painel').href =
+    'https://wa.me/?text=' + montarMsgWhatsApp(link, ind.nome);
+}
+
+async function carregarDadosPainel(ind) {
+  try {
+    var res = await Promise.all([
+      buscarConversoes(ind.id),
+      buscarRanking(),
+      buscarTotalParticipantes()
+    ]);
+    var conversoes = res[0], ranking = res[1], total = res[2];
+
+    var pontos = conversoes.length;
+    document.getElementById('kpi-pontos').textContent        = pontos;
+    document.getElementById('kpi-conversoes').textContent    = pontos;
+    document.getElementById('kpi-participantes').textContent = total || '—';
+
+    // Posição: casa pelo código (único), com o nome como reserva.
+    var posicao = ranking.findIndex(function (r) {
+      return (r.codigo && r.codigo === ind.codigo) || r.nome === ind.nome;
+    });
+    document.getElementById('kpi-posicao').textContent =
+      posicao >= 0 ? '#' + (posicao + 1) : '#' + (ranking.length + 1);
+
+    renderConversoes(conversoes);
+    renderRanking(ranking, ind);
+
+  } catch (e) {
+    console.warn('Erro ao carregar dados:', e);
+    document.getElementById('kpi-posicao').textContent = '#—';
+  }
+}
+
+function renderConversoes(lista) {
+  var el = document.getElementById('conversoes-lista');
+  if (!lista || !lista.length) {
+    el.innerHTML =
+      '<div class="empty-state"><div class="empty-icon">ℹ️</div>' +
+      '<h3>Nenhuma conversão ainda.</h3>' +
+      '<p>Compartilhe seu link para começar a ganhar pontos!</p></div>';
+    return;
+  }
+  el.innerHTML = lista.map(function (c) {
+    return '<div class="conversion-item"><div class="conv-info">' +
+             '<h4>' + esc(c.nome || 'Lead') + '</h4>' +
+             '<p>' + new Date(c.created_at).toLocaleDateString('pt-BR') + '</p>' +
+           '</div><div class="conv-badge">+1 ponto</div></div>';
+  }).join('');
+}
+
+function renderRanking(lista, ind) {
+  var el = document.getElementById('ranking-lista');
+  if (!lista || !lista.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><h3>Sem dados ainda.</h3></div>';
+    return;
+  }
+  el.innerHTML = lista.map(function (r, i) {
+    var pos = i + 1;
+    var isMine = ind && ((r.codigo && r.codigo === ind.codigo) || r.nome === ind.nome);
+    var posClass = pos === 1 ? 'top1' : pos === 2 ? 'top2' : pos === 3 ? 'top3' : '';
+    var partes = String(r.nome || '—').trim().split(' ');
+    var nomeMask = isMine ? r.nome
+      : partes[0] + (partes[1] ? ' ' + partes[1][0] + '.' : '');
+    return '<div class="ranking-item ' + (isMine ? 'mine' : '') + '">' +
+             '<div class="rank-pos ' + posClass + '">' +
+               (pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : pos) + '</div>' +
+             '<div class="rank-name">' + esc(nomeMask) +
+               (isMine ? '<small>← você</small>' : '') + '</div>' +
+             '<div class="rank-pts">' + (r.pontos || 0) + '<small>pontos</small></div>' +
+           '</div>';
+  }).join('');
+}
+
+// ══════════════════════════════════════
+// ACESSAR PAINEL / NAVEGAÇÃO
+// ══════════════════════════════════════
+async function acessarPainel() {
+  var ind = carregarLocal();
+
+  // Com sessão salva: atualiza com os dados frescos do servidor.
+  if (ind && ind.email) {
+    try {
+      var fresh = await buscarPorEmail((ind.email || '').toLowerCase());
+      if (fresh) ind = fresh;
+    } catch (_) { /* mantém o que estava salvo */ }
+  }
+
+  if (!ind || !ind.codigo) {
+    var email = prompt('Digite o e-mail que você usou para gerar seu link:');
+    if (!email) return;
+    try {
+      ind = await buscarPorEmail(email.trim().toLowerCase());
+    } catch (err) {
+      alert('Erro ao buscar seu cadastro. Tente novamente.');
+      return;
+    }
+    if (!ind) {
+      alert('E-mail não encontrado. Gere seu link no formulário abaixo para participar.');
+      document.getElementById('formulario').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+  }
+
+  salvarLocal(ind);
+  indicadorAtual = ind;
+  abrirPainel();
+}
+
+function acessarPainelPorEmail(e) { if (e) e.preventDefault(); acessarPainel(); }
+
+function voltarLanding() {
+  document.getElementById('page-painel').style.display  = 'none';
+  document.getElementById('page-landing').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function sair() {
+  localStorage.removeItem(STORE_KEY);
+  indicadorAtual = null;
+  voltarLanding();
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-content').forEach(function (t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════
+// STORAGE LOCAL (por campanha)
+// ══════════════════════════════════════
+var STORE_KEY = 'indicador_' + CAMPAIGN_ID;
+function salvarLocal(ind) { localStorage.setItem(STORE_KEY, JSON.stringify(ind)); }
+function carregarLocal() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch (e) { return null; }
+}
+
+// ══════════════════════════════════════
+// BOOT + RASTREIO DO ?ref=
+// ══════════════════════════════════════
+aplicarConfig();
+formatarTel(document.getElementById('whatsapp'));
+
+(async function () {
+  var params = new URLSearchParams(window.location.search);
+  var ref = params.get('ref') || params.get('sck');   // aceita as duas formas
+
+  var saved = carregarLocal();
+  if (saved && window.location.hash === '#painel') {
+    indicadorAtual = saved;
+    await abrirPainel();
+  }
+
+  if (!ref) return;
+  if (!DEMO_MODE) registrarClique(ref);   // métrica de topo de funil
+
+  if (!C.INVITE || C.INVITE.enabled === false) return;
+
+  // Faixa de convite → leva o colega ao checkout com sck=<codigo>
+  var banner = document.getElementById('convite-banner');
+  var cta    = document.getElementById('convite-cta');
+  var titulo = document.getElementById('convite-titulo');
+  var texto  = document.getElementById('convite-texto');
+
+  function pintarConvite(quem) {
+    titulo.innerHTML = (C.INVITE.title || '').replace(/<b>/g, '<span style="color:var(--gold-dk)">').replace(/<\/b>/g, '</span>');
+    texto.innerHTML  = (C.INVITE.text || '').replace(/\{\{quem\}\}/g,
+      '<strong style="color:var(--text)">' + esc(quem) + '</strong>');
+    cta.textContent = C.INVITE.cta || 'Quero minha vaga →';
+    cta.href = montarCheckout(ref);
+    banner.style.display = 'block';
+  }
+
+  pintarConvite('um colega');
+
+  if (DEMO_MODE) return;
+
+  // Personaliza com o primeiro nome de quem indicou (best-effort)
+  nomePorCodigo(ref)
+    .then(function (nome) { if (nome) pintarConvite(primeiroNome(nome)); })
+    .catch(function () {});
+})();
+
+// Handlers usados pelos onclick do HTML
+window.gerarLink            = gerarLink;
+window.abrirPainel          = abrirPainel;
+window.acessarPainel        = acessarPainel;
+window.acessarPainelPorEmail = acessarPainelPorEmail;
+window.copiarTexto          = copiarTexto;
+window.copiarModalLink      = copiarModalLink;
+window.voltarLanding        = voltarLanding;
+window.sair                 = sair;
+window.switchTab            = switchTab;
+
+})();
+</script>
+</body>
+</html>
