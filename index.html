@@ -61,7 +61,10 @@ window.CONFIG = {
 
   // ── 2. LINKS DE VENDA ───────────────────────────────────────────────
   // Para onde o link de indicação leva a colega indicada.
-  SALES_PAGE: 'https://pay.hotmart.com/Y106465997B?off=2wk97hmz&checkoutMode=10',
+  // A página de vendas (Greatpages) tem um script que lê o sck da URL e
+  // carimba o botão de compra — verificado em 21/07/2026: o sck chega
+  // correto ao checkout mesmo com UTMs na URL.
+  SALES_PAGE: 'https://www.midasdaeducacao.com.br/aviradacoordenacao',
   // Checkout direto (Hotmart/Kiwify/Eduzz). O código do indicador é
   // anexado como &sck=CODIGO — é assim que a venda é atribuída a ele.
   CHECKOUT_BASE: 'https://pay.hotmart.com/Y106465997B?off=2wk97hmz&checkoutMode=10',
@@ -1021,9 +1024,9 @@ function gerarCodigo(nome) {
 // — a atribuição do anúncio se preserva. Sem UTMs, sai o padrão do programa
 // de indicação, com o código do indicador em utm_content e no src.
 // A pontuação NÃO depende disso: o webhook usa o sck.
-function utmParams(codigo) {
+function utmOnly(codigo) {
   var incoming = new URLSearchParams(window.location.search);
-  var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src'];
+  var keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
   if (keys.some(function (k) { return incoming.get(k); })) {
     return keys.map(function (k) {
       var v = incoming.get(k);
@@ -1032,13 +1035,21 @@ function utmParams(codigo) {
   }
   var c = encodeURIComponent(codigo);
   return 'utm_source=indicacao&utm_medium=indique-e-ganhe' +
-         '&utm_campaign=aviradacoordenacao&utm_content=' + c + '&utm_term=organico' +
-         '&src=' + encodeURIComponent('indicacao|aviradacoordenacao|indique-e-ganhe|' + codigo + '|organico');
+         '&utm_campaign=aviradacoordenacao&utm_content=' + c + '&utm_term=organico';
+}
+
+function utmParams(codigo) {
+  var incoming = new URLSearchParams(window.location.search);
+  var src = incoming.get('src') ||
+            'indicacao|aviradacoordenacao|indique-e-ganhe|' + codigo + '|organico';
+  return utmOnly(codigo) + '&src=' + encodeURIComponent(src);
 }
 
 function montarLinkIndicacao(codigo) {
+  // Leva a colega à página de vendas. sck e src carregam o CÓDIGO puro —
+  // é deles que o script da página tira a atribuição pro botão de compra.
   var sep = (C.SALES_PAGE || '').indexOf('?') >= 0 ? '&' : '?';
-  return C.SALES_PAGE + sep + 'sck=' + codigo + '&' + utmParams(codigo);
+  return C.SALES_PAGE + sep + 'sck=' + codigo + '&src=' + codigo + '&' + utmOnly(codigo);
 }
 
 function montarCheckout(codigo) {
